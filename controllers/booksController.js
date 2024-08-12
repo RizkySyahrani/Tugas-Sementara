@@ -1,7 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const filePath = path.join(__dirname, "../books.json");
+// Pastikan path menuju file JSON sesuai
+const filePath = path.join(__dirname, "../book.json");
+
+// Pastikan file JSON ada atau buat file kosong jika belum ada
+if (!fs.existsSync(filePath)) {
+  fs.writeFileSync(filePath, JSON.stringify([]));
+}
 
 const getAllBooks = (req, res) => {
   const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -18,7 +24,7 @@ const createBook = (req, res) => {
     id: Date.now().toString(),
     title: req.body.title,
     author: req.body.author,
-    review: req.body.review,
+    review: req.body.review, // Pastikan review disimpan
   };
   books.push(newBook);
   fs.writeFileSync(filePath, JSON.stringify(books, null, 2));
@@ -38,7 +44,7 @@ const updateBook = (req, res) => {
     id: req.params.id,
     title: req.body.title,
     author: req.body.author,
-    review: req.body.review,
+    review: req.body.review, // Pastikan review diupdate
   };
   fs.writeFileSync(filePath, JSON.stringify(books, null, 2));
   res.redirect("/books");

@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "1",
+    "title": "The Demon Huanted world",
+    "author": "Carl Sagan",
+    "review": "This is a review for Example Book 1."
+  },
+  {
+    "id": "2",
+    "title": "Sapiens",
+    "author": "Yuval Noah",
+    "review": "This is a review for Example Book 2."
+  },
+  {
+    "id": "1723440719947",
+    "title": "Animal Farm",
+    "author": "Goerge Orwell",
+    "review": "This is a review for Example Book 3."
+  }
+]

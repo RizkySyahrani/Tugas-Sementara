@@ -1,9 +1,11 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const bookRoutes = require("./routes/bookRoutes");
 const app = express();
+
+// Set view engine to EJS
+app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
@@ -20,5 +22,5 @@ app.get("/test", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server is running on https://localhost:3000");
+  console.log("Server is running on http://localhost:3000");
 });
