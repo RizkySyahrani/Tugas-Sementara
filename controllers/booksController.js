@@ -12,7 +12,6 @@ if (!fs.existsSync(filePath)) {
 
 const getAllBooks = (req, res) => {
   const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  res.render("books/index", { books });
   console.log("ubah api");
   res.json(books);
 };

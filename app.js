@@ -13,14 +13,6 @@ app.use(express.static("public"));
 
 app.use("/books", bookRoutes);
 
-app.get("/", (req, res) => {
-  res.redirect("/books");
-});
-
-app.get("/test", (req, res) => {
-  res.send("Server is running without database!");
-});
-
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
