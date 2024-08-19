@@ -1,69 +1,60 @@
-const books = require("../book.json");
-const fs = require("fs");
-const path = require("path");
+// controllers/bookController.js
+const BookModel = require("../models/bookModel");
 
-// Pastikan path menuju file JSON sesuai
-const filePath = path.join(__dirname, "../book.json");
-
-// Pastikan file JSON ada atau buat file kosong jika belum ada
-if (!fs.existsSync(filePath)) {
-  fs.writeFileSync(filePath, JSON.stringify([]));
-}
-
-const getAllBooks = (req, res) => {
-  const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  console.log("ubah api");
-  res.json(books);
+const getAllBooks = async (req, res) => {
+  try {
+    const books = await BookModel.getAllBooks();
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-const getCreateBookForm = (req, res) => {
-  res.render("books/new");
+const getBookById = async (req, res) => {
+  try {
+    const book = await BookModel.getBookById(req.params.id);
+    if (book) {
+      res.json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-const createBook = (req, res) => {
-  const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const newBook = {
-    id: Date.now().toString(),
-    title: req.body.title,
-    author: req.body.author,
-    review: req.body.review, // Pastikan review disimpan
-  };
-  books.push(newBook);
-  fs.writeFileSync(filePath, JSON.stringify(books, null, 2));
-  res.redirect("/books");
+const createBook = async (req, res) => {
+  try {
+    const id = await BookModel.createBook(req.body);
+    res.status(201).json({ id });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-const getEditBookForm = (req, res) => {
-  const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const book = books.find((b) => b.id === req.params.id);
-  res.render("books/edit", { book });
+const updateBook = async (req, res) => {
+  try {
+    await BookModel.updateBook(req.params.id, req.body);
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-const updateBook = (req, res) => {
-  const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const bookIndex = books.findIndex((b) => b.id === req.params.id);
-  books[bookIndex] = {
-    id: req.params.id,
-    title: req.body.title,
-    author: req.body.author,
-    review: req.body.review, // Pastikan review diupdate
-  };
-  fs.writeFileSync(filePath, JSON.stringify(books, null, 2));
-  res.redirect("/books");
-};
-
-const deleteBook = (req, res) => {
-  const books = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  const updatedBooks = books.filter((b) => b.id !== req.params.id);
-  fs.writeFileSync(filePath, JSON.stringify(updatedBooks, null, 2));
-  res.redirect("/books");
+const deleteBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await BookModel.deleteBook(id); // Pastikan model Anda memiliki metode deleteBook
+    res.status(204).end(); // 204 No Content, buku berhasil dihapus
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 module.exports = {
   getAllBooks,
-  getCreateBookForm,
+  getBookById,
   createBook,
-  getEditBookForm,
   updateBook,
   deleteBook,
 };

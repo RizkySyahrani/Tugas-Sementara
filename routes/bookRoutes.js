@@ -1,23 +1,13 @@
+// routes/bookRouter.js
 const express = require("express");
+const bookController = require("../controllers/booksController");
+
 const router = express.Router();
-const booksController = require("../controllers/booksController");
 
-// Route untuk mendapatkan semua buku
-router.get("/", booksController.getAllBooks);
-
-// Route untuk menampilkan form pembuatan buku baru
-router.get("/new", booksController.getCreateBookForm);
-
-// Route untuk membuat buku baru
-router.post("/", booksController.createBook);
-
-// Route untuk menampilkan form edit buku
-router.get("/:id/edit", booksController.getEditBookForm);
-
-// Route untuk mengupdate buku
-router.put("/:id", booksController.updateBook);
-
-// Route untuk menghapus buku
-router.delete("/:id", booksController.deleteBook);
+router.get("/books", bookController.getAllBooks);
+router.get("/books/:id", bookController.getBookById);
+router.post("/books", bookController.createBook);
+router.put("/books/:id", bookController.updateBook);
+router.delete("/books/:id", bookController.deleteBook);
 
 module.exports = router;

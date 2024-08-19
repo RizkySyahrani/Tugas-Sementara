@@ -1,18 +1,22 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
+const path = require("path");
+const cors = require("cors"); // Import cors
 const bookRoutes = require("./routes/bookRoutes");
 const app = express();
 
-// Set view engine to EJS
-app.set("view engine", "ejs");
+// Mengaktifkan CORS untuk semua request
+app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(methodOverride("_method"));
-app.use(express.static("public"));
+// Static files
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/books", bookRoutes);
+// Middleware untuk parsing body request
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.use("/api", bookRoutes); // Prefix '/api' untuk semua route buku
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port http://localhost:${port}`);
 });

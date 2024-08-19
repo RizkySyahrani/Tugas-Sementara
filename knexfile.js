@@ -3,9 +3,10 @@ module.exports = {
     client: "pg", // Atau mysql, sqlite3, dll.
     connection: {
       host: "127.0.0.1",
-      user: "your_database_user",
-      password: "your_database_password",
-      database: "your_database_name",
+      user: "myuser", // Sesuai dengan POSTGRES_USER
+      password: "mypassword", // Sesuai dengan POSTGRES_PASSWORD
+      database: "mydatabase", // Sesuai dengan POSTGRES_DB
+      port: 5432, // Port yang digunakan
     },
     migrations: {
       directory: "./migrations",
